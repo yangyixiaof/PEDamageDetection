@@ -78,5 +78,9 @@ public class UVCJFrame extends JFrame {
 			uvctd.start();
 		}
 	}
-
+	
+	public static void main(String[] args) {
+		new UVCJFrame();
+	}
+	
 }
