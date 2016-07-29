@@ -25,6 +25,9 @@ public class UVCJFrame extends JFrame {
 	
 	private UVCStreamTask uvcst = null;
 	
+	/**
+	 * 
+	 */
 	public UVCJFrame() {
 		setSize(800, 450);
 		setLocationRelativeTo(null);
@@ -41,6 +44,9 @@ public class UVCJFrame extends JFrame {
 		
 		thumbnails.setBounds(500, 295, 300, 100);
 		getContentPane().add(thumbnails);
+		
+		control.setBounds(430, 780, 20, 20);
+		getContentPane().add(control);
 		
 		for (int i=0;i<5;i++)
 		{
@@ -62,8 +68,7 @@ public class UVCJFrame extends JFrame {
 				}
 			}
 		});
-		
-		pack();
+		// pack();
 	}
 	
 	private void ControlActionPerformed(ActionEvent evt)
