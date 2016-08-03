@@ -2,18 +2,11 @@ package UVCInputStream;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.bytedeco.javacpp.avcodec;
-import org.bytedeco.javacv.FFmpegFrameRecorder;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.FrameGrabber;
 import org.bytedeco.javacv.Java2DFrameConverter;
@@ -23,17 +16,14 @@ public class UVCStreamTask implements Runnable {
 
 	private JPanel canvas = null;
 	private JPanel bigimageshow = null;
-	private ArrayList<JLabel> labels = null;
 	
 	private long lasttimestamp = System.currentTimeMillis();
 	
 	private boolean run = false;
-	private Queue<ImageIcon> iiqueue = new LinkedList<ImageIcon>();
 	
-	public UVCStreamTask(JPanel canvas, JPanel bigimageshow, ArrayList<JLabel> labels) {
+	public UVCStreamTask(JPanel canvas, JPanel bigimageshow) {
 		this.canvas = canvas;
 		this.bigimageshow = bigimageshow;
-		this.labels = labels;
 	}
 	
 	@Override
@@ -41,31 +31,29 @@ public class UVCStreamTask implements Runnable {
 		run = true;
 		try {
 			OpenCVFrameGrabber grabber = InitialGrabber();
-			FFmpegFrameRecorder recorder = InitialRecorder();
+			// FFmpegFrameRecorder recorder = InitialRecorder();
 
 			Frame capturedFrame = null;
 			Java2DFrameConverter paintConverter = new Java2DFrameConverter();
 			while ((capturedFrame = grabber.grab()) != null && run) {
+				
+				// System.err.println("testing.");
+				
 				BufferedImage buff = paintConverter.getBufferedImage(capturedFrame, 1);
 				Graphics g = canvas.getGraphics();
 				g.drawImage(buff, 0, 0, UVCStreamMetaInfo.CAPTUREWIDTH, UVCStreamMetaInfo.CAPTUREHRIGHT, 0, 0,
 						buff.getWidth(), buff.getHeight(), null);
-				recorder.record(capturedFrame);
+				// recorder.record(capturedFrame);
 				
 				if (System.currentTimeMillis() > lasttimestamp + 5000)
 				{
 					lasttimestamp = System.currentTimeMillis();
-					iiqueue.add(new ImageIcon(buff));
-					if (iiqueue.size() > labels.size())
-					{
-						iiqueue.poll();
-					}
 					Graphics bisg = bigimageshow.getGraphics();
-					bisg.drawImage(buff, 0, 0, labels.get(0).getWidth(), labels.get(0).getHeight(), 0, 0, buff.getWidth(), buff.getHeight(), null);
+					bisg.drawImage(buff, 0, 0, UVCStreamMetaInfo.CAPTUREWIDTH, UVCStreamMetaInfo.CAPTUREHRIGHT, 0, 0, buff.getWidth(), buff.getHeight(), null);
 				}
 			}
 			
-			recorder.stop();
+			// recorder.stop();
 			grabber.stop();
 		} catch (FrameGrabber.Exception ex) {
 			Logger.getLogger(UVCStreamTask.class.getName()).log(Level.SEVERE, null, ex);
@@ -114,7 +102,7 @@ public class UVCStreamTask implements Runnable {
 		return grabber;
 	}
 	
-	private FFmpegFrameRecorder InitialRecorder() {
+	/*private FFmpegFrameRecorder InitialRecorder() {
 		FFmpegFrameRecorder recorder = new FFmpegFrameRecorder("output.mp4", UVCStreamMetaInfo.CAPTUREWIDTH,
 				UVCStreamMetaInfo.CAPTUREHRIGHT, 2);
 		recorder.setInterleaved(true);
@@ -140,6 +128,6 @@ public class UVCStreamTask implements Runnable {
 			e.printStackTrace();
 		}
 		return recorder;
-	}
+	}*/
 	
 }

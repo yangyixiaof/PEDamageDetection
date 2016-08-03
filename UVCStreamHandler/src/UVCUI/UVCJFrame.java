@@ -1,11 +1,9 @@
 package UVCUI;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.bytedeco.javacv.FrameGrabber;
@@ -21,8 +19,6 @@ public class UVCJFrame extends JFrame {
 	private JPanel canvasvideo = new JPanel();
 	private JPanel canvasimage = new JPanel();
 	
-	private ArrayList<JLabel> labels = new ArrayList<JLabel>();
-	
 	private UVCStreamTask uvcst = null;
 	
 	/**
@@ -30,7 +26,7 @@ public class UVCJFrame extends JFrame {
 	 */
 	public UVCJFrame() {
 		setLayout(null);
-		setSize(1000, 450);
+		setSize(1000, 500);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setVisible(true);
@@ -40,13 +36,13 @@ public class UVCJFrame extends JFrame {
 		canvasvideo.setBounds(10, 0, 480, 400);
 		getContentPane().add(canvasvideo);
 		
-		canvasimage.setBounds(500, 0, 480, 400);
+		canvasimage.setBounds(510, 0, 480, 400);
 		getContentPane().add(canvasimage);
 		
-		startcontrol.setBounds(350, 415, 50, 20);
+		startcontrol.setBounds(320, 415, 80, 40);
 		getContentPane().add(startcontrol);
 		
-		stopcontrol.setBounds(650, 415, 50, 20);
+		stopcontrol.setBounds(620, 415, 80, 40);
 		getContentPane().add(stopcontrol);
 		
 		startcontrol.addActionListener(new java.awt.event.ActionListener() {
@@ -70,7 +66,7 @@ public class UVCJFrame extends JFrame {
 	
 	private void StartControlActionPerformed(ActionEvent evt)
 			throws Exception, FrameGrabber.Exception, InterruptedException {
-		uvcst = new UVCStreamTask(canvasvideo, canvasimage, labels);
+		uvcst = new UVCStreamTask(canvasvideo, canvasimage);
 		Thread uvctd = new Thread(uvcst);
 		uvctd.start();
 	}
