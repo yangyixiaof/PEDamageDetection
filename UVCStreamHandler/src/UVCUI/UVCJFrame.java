@@ -29,6 +29,7 @@ public class UVCJFrame extends JFrame {
 	 * 
 	 */
 	public UVCJFrame() {
+		setLayout(null);
 		setSize(800, 450);
 		setLocationRelativeTo(null);
 		setResizable(false);
