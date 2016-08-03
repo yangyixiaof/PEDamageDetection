@@ -11,7 +11,7 @@ import org.bytedeco.javacv.FrameGrabber;
 import UVCInputStream.UVCStreamTask;
 
 public class UVCJFrame extends JFrame {
-
+	
 	private static final long serialVersionUID = -6026250728018827459L;
 	
 	private JButton startcontrol = new JButton("Start");
@@ -21,9 +21,6 @@ public class UVCJFrame extends JFrame {
 	
 	private UVCStreamTask uvcst = null;
 	
-	/**
-	 * 
-	 */
 	public UVCJFrame() {
 		setLayout(null);
 		setSize(1000, 500);
@@ -31,7 +28,7 @@ public class UVCJFrame extends JFrame {
 		setResizable(false);
 		setVisible(true);
 		setTitle("Camera JFrame");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		canvasvideo.setBounds(10, 0, 480, 400);
 		getContentPane().add(canvasvideo);
@@ -77,6 +74,12 @@ public class UVCJFrame extends JFrame {
 	
 	public static void main(String[] args) {
 		new UVCJFrame();
+	}
+	
+	@Override
+	public void dispose() {
+		uvcst.Stop();
+		super.dispose();
 	}
 	
 }
